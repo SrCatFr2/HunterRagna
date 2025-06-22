@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ragnarok Hunt</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="background-grid"></div>
+    <div class="background-glow"></div>
+    
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-crosshairs"></i>
+                <span class="brand-text">Ragnarok Hunt</span>
+                <span class="version">v2.1</span>
+            </div>
+            <div class="nav-status">
+                <div class="status-indicator online" id="connection-status">
+                    <i class="fas fa-circle"></i>
+                    <span>Online</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Header Section -->
+            <header class="page-header">
+                <h1 class="main-title">Hunter de sitios avanzado!</h1>
+                <p class="main-subtitle">Parallel processing • Real-time analysis • Payment gateway detection</p>
+            </header>
+
+            <!-- Control Panel -->
+            <section class="control-section">
+                <div class="panel main-panel">
+                    <div class="panel-header">
+                        <h2><i class="fas fa-search"></i> Search Configuration</h2>
+                        <div class="panel-status">
+                            <span class="status-dot active"></span>
+                            <span>Ready</span>
+                        </div>
+                    </div>
+                    
+                    <div class="panel-body">
+                        <form id="hunt-form" class="search-form">
+                            <div class="form-row">
+                                <div class="form-group flex-2">
+                                    <label for="keyword">
+                                        <i class="fas fa-bullseye"></i>
+                                        Search Query
+                                    </label>
+                                    <input 
+                                        type="text" 
+                                        id="keyword" 
+                                        name="keyword" 
+                                        placeholder="Enter your search term..."
+                                        autocomplete="off"
+                                        required
+                                    >
+                                    <div class="input-hint">Use specific keywords for better results</div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="numResults">
+                                        <i class="fas fa-hashtag"></i>
+                                        Target Count
+                                    </label>
+                                    <input 
+                                        type="number" 
+                                        id="numResults" 
+                                        name="numResults" 
+                                        value="25" 
+                                        min="5" 
+                                        max="100" 
+                                        required
+                                    >
+                                    <div class="input-hint">5-100 sites</div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary" id="start-hunt">
+                                    <i class="fas fa-rocket"></i>
+                                    <span>Start Analysis</span>
+                                </button>
+                                
+                                <button type="button" class="btn btn-secondary" id="advanced-options">
+                                    <i class="fas fa-cog"></i>
+                                    <span>Options</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Status Section -->
+            <section class="status-section" id="status-section">
+                <div class="panel status-panel">
+                    <div class="panel-header">
+                        <h2><i class="fas fa-chart-line"></i> Operation Status</h2>
+                        <div class="status-controls">
+                            <button class="btn-icon" id="minimize-status" title="Minimize">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="panel-body">
+                        <div class="status-display">
+                            <div class="status-message" id="status-message">
+                                <i class="fas fa-info-circle"></i>
+                                <span>System ready - Configure search parameters above</span>
+                            </div>
+                            
+                            <div class="progress-section">
+                                <div class="progress-info">
+                                    <span class="progress-label" id="progress-label">Progress</span>
+                                    <span class="progress-percent" id="progress-percent">0%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="progress-fill"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="engine-status" id="engine-status" style="display: none;">
+                                <!-- Engine status will be populated here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Results Section -->
+            <section class="results-section" id="results-section" style="display: none;">
+                <div class="panel results-panel">
+                    <div class="panel-header">
+                        <h2><i class="fas fa-chart-bar"></i> Analysis Results</h2>
+                        <div class="results-actions">
+                            <button class="btn btn-sm btn-outline" id="export-json">
+                                <i class="fas fa-download"></i>
+                                <span>Export JSON</span>
+                            </button>
+                            <button class="btn btn-sm btn-outline" id="export-csv">
+                                <i class="fas fa-file-csv"></i>
+                                <span>Export CSV</span>
+                            </button>
+                            <button class="btn btn-sm btn-danger" id="clear-results">
+                                <i class="fas fa-trash"></i>
+                                <span>Clear</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Summary Stats -->
+                    <div class="summary-section" id="summary-section">
+                        <!-- Summary will be populated here -->
+                    </div>
+                    
+                    <!-- Filter Tabs -->
+                    <div class="filter-tabs">
+                        <button class="tab-btn active" data-filter="all">
+                            <i class="fas fa-globe"></i>
+                            <span>All Sites</span>
+                            <span class="count" id="count-all">0</span>
+                        </button>
+                        <button class="tab-btn" data-filter="clean">
+                            <i class="fas fa-shield-check"></i>
+                            <span>Clean</span>
+                            <span class="count" id="count-clean">0</span>
+                        </button>
+                        <button class="tab-btn" data-filter="payment">
+                            <i class="fas fa-credit-card"></i>
+                            <span>Payment</span>
+                            <span class="count" id="count-payment">0</span>
+                        </button>
+                        <button class="tab-btn" data-filter="protected">
+                            <i class="fas fa-shield-alt"></i>
+                            <span>Protected</span>
+                            <span class="count" id="count-protected">0</span>
+                        </button>
+                        <button class="tab-btn" data-filter="relevant">
+                            <i class="fas fa-star"></i>
+                            <span>Relevant</span>
+                            <span class="count" id="count-relevant">0</span>
+                        </button>
+                    </div>
+                    
+                    <!-- Results List -->
+                    <div class="results-container">
+                        <div class="results-list" id="results-list">
+                            <!-- Results will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Loading Modal -->
+    <div class="modal-overlay" id="loading-modal">
+        <div class="modal-content loading-modal">
+            <div class="loader">
+                <div class="loader-ring"></div>
+                <div class="loader-ring"></div>
+                <div class="loader-ring"></div>
+            </div>
+            <h3>Initializing Hunt Protocol</h3>
+            <p id="loading-message">Preparing parallel search engines...</p>
+            <div class="loading-stats" id="loading-stats">
+                <!-- Loading stats will be shown here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Advanced Options Modal -->
+    <div class="modal-overlay" id="options-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-cog"></i> Advanced Options</h3>
+                <button class="modal-close" id="close-options">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="option-group">
+                    <label>
+                        <input type="checkbox" id="deep-scan" checked>
+                        <span>Deep content analysis</span>
+                    </label>
+                    <label>
+                        <input type="checkbox" id="ssl-check" checked>
+                        <span>SSL certificate validation</span>
+                    </label>
+                    <label>
+                        <input type="checkbox" id="security-headers">
+                        <span>Security headers analysis</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
