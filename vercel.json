@@ -1,52 +1,37 @@
 {
   "version": 2,
   "name": "ragnarok-hunt",
-  "builds": [
-    {
-      "src": "server.js",
-      "use": "@vercel/node"
+  "functions": {
+    "server.js": {
+      "maxDuration": 60,
+      "memory": 1024,
+      "runtime": "nodejs18.x"
     }
-  ],
+  },
   "routes": [
     {
       "src": "/socket.io/(.*)",
-      "dest": "/server.js"
+      "dest": "/index.js"
     },
     {
       "src": "/api/(.*)",
-      "dest": "/server.js"
+      "dest": "/index.js"
     },
     {
-      "src": "/css/(.*)",
-      "dest": "/public/css/$1"
+      "src": "/public/(.*)",
+      "dest": "/public/$1"
     },
     {
-      "src": "/js/(.*)",
-      "dest": "/public/js/$1"
-    },
-    {
-      "src": "/assets/(.*)",
-      "dest": "/public/assets/$1"
-    },
-    {
-      "src": "/(.*\\.(ico|png|jpg|jpeg|gif|svg|webp))",
+      "src": "/(.*\\.(css|js|ico|png|jpg|jpeg|gif|svg|webp))",
       "dest": "/public/$1"
     },
     {
       "src": "/(.*)",
-      "dest": "/server.js"
+      "dest": "/index.js"
     }
   ],
   "env": {
     "NODE_ENV": "production"
   },
-  "functions": {
-    "server.js": {
-      "maxDuration": 60
-    }
-  },
-  "regions": ["iad1"],
-  "github": {
-    "silent": true
-  }
+  "regions": ["iad1"]
 }
